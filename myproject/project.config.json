@@ -1,0 +1,67 @@
+{
+	"description": "NeteaseCloudMusic wxApp test",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"appid": "wx5549ce9bea118e91",
+	"projectname": "neteasecloudmusic",
+	"miniprogramRoot": "dist/",
+	"libVersion": "2.3.0",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 3,
+			"list": [
+				{
+					"id": -1,
+					"name": "login",
+					"pathName": "pages/login",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "center",
+					"pathName": "pages/center",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "每日推荐",
+					"pathName": "pages/daily_recommendation",
+					"query": ""
+				},
+				{
+					"id": 3,
+					"name": "播放界面",
+					"pathName": "pages/player",
+					"query": "id=64006"
+				},
+				{
+					"id": 4,
+					"name": "测试页",
+					"pathName": "pages/testCircle",
+					"query": "id=64006"
+				}
+			]
+		}
+	}
+}

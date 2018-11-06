@@ -1,0 +1,265 @@
+@import 'basics.less';
+
+page {
+    background: #fff;
+    width: 100%;
+    height: 100%;
+}
+
+.player-wrap {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+
+    @blur: 50rpx;
+    .player-bg {
+        position: absolute;
+        top: -@blur;
+        left: -@blur;
+        right: -@blur;
+        bottom: -@blur;
+        filter: blur(@blur);
+        z-index: 1;
+
+        image {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .player-box {
+        width: 100%;
+        height: 100%;
+        .box();
+        .box-orient(vertical);
+        position: relative;
+        z-index: 2;
+
+        .player-top {
+            width: 100%;
+            .box();
+            .box-flex(1);
+            position: relative;
+
+            .song-poster {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 2;
+
+                .player-needle {
+                    width: 96rpx *2;
+                    height: 152rpx *2;
+                    // background-size: 100%;
+                    // background-repeat: no-repeat;
+                    position: absolute;
+                    z-index: 2;
+                    top: -30rpx;
+                    left: 50%;
+                    .translate(0, 0);
+                    .transition(.3s);
+                    .translate(-30rpx, 0);
+
+                    &.pause.needle {
+                        .rotate(-30deg);
+                    }
+
+                    .needle {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        background-size: 100%;
+                        background-repeat: no-repeat;
+                        z-index: 2;
+                        transform-origin: 33rpx 33rpx;
+                        .rotate(0);
+                    }
+                }
+            
+                .player-disc-wrap {
+                    width: 296rpx *2;
+                    height: 296rpx *2;
+                    position: relative;
+                    z-index: 2;
+                    margin: 140rpx auto 0;
+            
+                    .player-disc {
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+                        .animation(disc_rotate 15s infinite linear);
+            
+                        &.pause {
+                            animation-play-state: paused;
+                            -webkit-animation-play-state:paused;
+                        }
+            
+                        .keyframes(disc_rotate, {
+                            from {
+                                .rotate(0deg);
+                            }
+                            to {
+                                .rotate(360deg);
+                            }
+                        });
+                        
+                        .player-disc-mask {
+                            width: 100%;
+                            height: 100%;
+                            background-size: 100%;
+                            background-repeat: no-repeat;
+                            position: absolute;
+                            z-index: 2;
+                            top: 0;
+                            left: 0;
+                        }
+                        .player-poster {
+                            width: 184rpx *2;
+                            height: 184rpx *2;
+                            position: absolute;
+                            z-index: 1;
+                            top: 50%;
+                            left: 50%;
+                            .translate(-50%, -50%);
+            
+                            image {
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+            .song-lyric {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1;
+            }
+        }
+
+        .player-bottom {
+            width: 100%;
+            height: 340rpx;
+
+            .player-fun-bar {
+                width: 100%;
+                height: 136rpx;
+                padding: 0 40rpx;
+                box-sizing: border-box;
+                .box();
+                .box-orient(horizontal);
+                .box-align(center);
+                .box-pack(center);
+                
+                .btn {
+                    width: 25%;
+                    height: 94rpx;
+                    line-height: 94rpx;
+                    color: #fff;
+                    font-size: 40rpx;
+                    text-align: center;
+                    font-weight: lighter;
+                }
+            }
+
+            .player-controler {
+                width: 100%;
+                height: 204rpx;
+
+                .player-progress-wrap {
+                    width: 100%;
+                    height: 32rpx;
+                    padding: 0 10rpx;
+                    box-sizing: border-box;
+                    .box();
+                    .box-orient(horizontal);
+                    .box-align(center);
+                    .box-pack(center);
+
+                    .time {
+                        width: 76rpx;
+                        height: 32rpx;
+                        font-size: 20rpx;
+                        text-align: center;
+                        line-height: 32rpx;
+                        color: rgba(255, 255, 255, .6);
+                    }
+
+                    .progress-bar {
+                        .box();
+                        .box-flex(1);
+                        // height: 32rpx;
+                        height: 4rpx;
+                        background: rgba(255, 255, 255, .3);
+                        border-radius: 2rpx;
+                        margin: 0 15rpx;
+
+                        .bar {
+                            width: 0;
+                            height: 4rpx;
+                            background: #d33a31;
+                            border-radius: 2rpx;
+                            position: relative;
+
+                            .dot {
+                                position: absolute;
+                                width: 32rpx;
+                                height: 32rpx;
+                                border-radius: 50%;
+                                background: #fff;
+                                right: -16rpx;
+                                top: -14rpx;
+
+                                &:before {
+                                    content: '';
+                                    width: 8rpx;
+                                    height: 8rpx;
+                                    border-radius: 50%;
+                                    background: #d33a31;
+                                    position: absolute;
+                                    top: 50%;
+                                    left: 50%;
+                                    .translate(-50%, -50%);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .player-controler-bar {
+                    width: 100%;
+                    height: 172rpx;
+                    .box();
+                    .box-orient(horizontal);
+                    .box-align(center);
+                    .box-pack(center);
+
+                    .btn {
+                        width: 94rpx;
+                        height: 94rpx;
+                        line-height: 94rpx;
+                        color: #fff;
+                        font-size: 66rpx;
+                        text-align: center;
+
+                        &.bofang {
+                            margin: 0 80rpx;
+                        }
+                        &.caozuo {
+                            opacity: .7;
+                            font-weight: lighter;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    
+}

@@ -1,0 +1,27 @@
+module.exports = {
+  //若超过1万，则转换为【万】为单位
+  filterPlayCount: function (num) {
+    return ((num / 10000) >= 1) ? Math.floor(num / 10000) + '万' : num
+  },
+  // 格式化数字
+  formateNum: function (num) {
+    var str = ''
+    if (num > 0) {
+      if (num < 10) {
+        str = "0" + num;
+      } else {
+        str = num + "";
+      }
+    } else {
+      str = '00'
+    }
+    return str
+  },
+  //毫秒转 分：秒
+  countSongsDuration: function (time, isMillisecond) {
+    var t = time * (isMillisecond ? 1 : 1000)
+    var min = this.formateNum((t % 3600000) / 60000)
+    var sec = this.formateNum((t % 60000) / 1000)
+    return min + ':' + sec
+  }
+};

@@ -1,0 +1,143 @@
+<style lang="less" src="../style/test.less"></style>
+
+<template>
+
+    <view class="player-wrap">
+        <view class="bg">
+            <image src="{{songDetail.al.picUrl}}" mode="scaleToFill"
+              lazy-load="false">
+            </image>
+        </view>
+    </view>
+    
+    <view class="end"></view>
+
+</template>
+
+<script>
+import wepy from 'wepy';
+import gConfig from '../util/config.js';
+import util from '../util/util.js';
+let Fly = require('../util/fly.min.js');
+let fly = new Fly();
+fly.config.timeout = 5000;
+fly.config.baseURL = gConfig.host;
+fly.interceptors.response.use(
+  response => {
+    //只将请求结果的data字段返回
+    return response.data;
+  },
+  err => {
+    //发生网络错误后会走到这里
+    return Promise.resolve(err);
+  }
+);
+
+export default class Login extends wepy.page {
+  config = {
+    navigationBarTitleText: '圆弧+音频播放'
+  };
+  components = {};
+
+  data = {
+    songId: null,
+    songDetail: null,
+    songUrl: null,
+    songLyric: null,
+    playerSetting: {}
+  };
+
+  computed = {};
+
+  methods = {};
+
+  events = {};
+
+  getSongsDetail(id) {
+    let self = this;
+    fly
+      .get(`/song/detail`, { ids: id })
+      .then(res => {
+        console.log(res);
+        self.songDetail = res.songs[0];
+        self.$apply();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  getSongsUrl(id) {
+    // console.log(id);
+    let self = this;
+    fly
+      .get(`/song/url`, { id })
+      .then(res => {
+        console.log(res);
+        self.songUrl = res.data[0].url;
+        self.$apply();
+
+        self.initPlayer();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  getSongsLyric(id) {
+    // console.log(id);
+    let self = this;
+    fly
+      .get(`/lyric`, { id })
+      .then(res => {
+        console.log(res);
+        self.songLyric = res.lrc.lyric;
+        self.$apply();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  initPlayer() {
+    let self = this;
+    const innerAudioContext = wx.createInnerAudioContext();
+    innerAudioContext.autoplay = true;
+    innerAudioContext.loop = false;
+    innerAudioContext.src = self.songUrl;
+
+    innerAudioContext.onCanplay(() => {});
+
+    innerAudioContext.onPlay(() => {
+      console.log('开始播放');
+    });
+
+    innerAudioContext.onPause(() => {});
+
+    innerAudioContext.onStop(() => {});
+
+    innerAudioContext.onEnded(() => {});
+
+    innerAudioContext.onTimeUpdate(() => {});
+
+    innerAudioContext.onWaiting(() => {});
+
+    innerAudioContext.onError(res => {
+      console.log(res.errMsg);
+      console.log(res.errCode);
+    });
+  }
+
+  onShow() {}
+
+  onLoad(e) {
+    let self = this;
+    self.songId = e.id;
+    self.$apply();
+
+    self.getSongsDetail(e.id);
+    self.getSongsUrl(e.id);
+    self.getSongsLyric(e.id);
+  }
+}
+</script>

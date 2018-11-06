@@ -1,0 +1,403 @@
+<style lang="less" src="../style/index.less"></style>
+
+<template>
+    
+    <view class="bg-top-black"></view>
+
+    <!-- 顶部tab栏 -->
+    <view class="top-tab-bar">
+      <view class="tab cur"><text>个性推荐</text><view class="i"></view></view>
+      <view class="tab"><text>主播电台</text><view class="i"></view></view>
+    </view>
+
+    <!-- 容器 -->
+    <view class="tab-cont-wrap">
+
+      <!-- 音乐 -->
+      <view class="cont cont-music">
+          <!-- 首页banner -->
+          <view class="banner-wrap">
+            <swiper indicator-dots indicator-color="rgba(255, 255, 255, .5)" indicator-active-color="rgba(0, 0, 0, .5)" autoplay circular>
+                <block wx:for="{{bannerData}}" wx:key="">
+                    <swiper-item>
+                        <image mode="aspectFill" src="{{item.picUrl}}"></image>
+                    </swiper-item>
+                </block>
+            </swiper>
+          </view>
+
+          <!-- tab2 -->
+          <view class="tab-bar-2">
+              <view class="tab">
+                <view class="image">
+                  <view class="iconfont icon-diantaizhibo"></view>
+                </view>
+                <view class="text">私人FM</view>
+              </view>
+              <view class="tab">
+                <view class="image">
+                  <view class="iconfont icon-calendar"></view>
+                </view>
+                <view class="text">每日推荐</view>
+              </view>
+              <view class="tab">
+                <view class="image">
+                  <view class="iconfont icon-swticonyinle2"></view>
+                </view>
+                <view class="text">歌单</view>
+              </view>
+              <view class="tab">
+                <view class="image">
+                  <view class="iconfont icon-paixingbang"></view>
+                </view>
+                <view class="text">排行榜</view>
+              </view>
+          </view>
+
+          <!-- 推荐歌单 -->
+          <view class="com-pannel">
+            <view class="pannel-title">推荐歌单</view>
+            <view class="music-list-wrap">
+              <block wx:for="{{recommendData}}" wx:key="">
+                <view class="music-list-item">
+                  <view class="poster">
+                    <view class="playcount">{{_handle.filterPlayCount(item.playcount)}}</view>
+                    <image src="{{item.picUrl}}" mode="scaleToFill" lazy-load="true"></image>
+                  </view>
+                  <view class="name">{{item.name}}</view>
+                </view>
+              </block>
+            </view>
+          </view>
+
+          <!-- 最新音乐 -->
+          <view class="com-pannel">
+            <view class="pannel-title">最新音乐</view>
+            <view class="music-list-wrap">
+              <block wx:for="{{topPlayListData}}" wx:key="">
+                <view class="music-list-item">
+                  <view class="poster">
+                    <image src="{{item.coverImgUrl}}" mode="scaleToFill" lazy-load="true"></image>
+                  </view>
+                  <view class="name">{{item.name}}</view>
+                </view>
+              </block>
+            </view>
+          </view>
+
+          <!-- 主播电台 -->
+          <view class="com-pannel djprogram">
+            <view class="pannel-title">主播电台</view>
+            <view class="music-list-wrap">
+              <block wx:for="{{djprogramData}}" wx:key="">
+                <view class="music-list-item">
+                  <view class="poster">
+                    <image src="{{item.picUrl}}" mode="scaleToFill" lazy-load="true"></image>
+                  </view>
+                  <view class="name">{{item.name}}</view>
+                </view>
+              </block>
+            </view>
+          </view>
+
+          <!-- 会员专区 -->
+          <view class="vip-pannel">
+            <view class="vip-bg" style="background: url({{bannerData[vipIndex].picUrl}})"></view>
+            <view class="vip-title">会员专区</view>
+
+            <swiper autoplay circular previous-margin="54rpx" next-margin="54rpx" bindchange="vipChange">
+                <block wx:for="{{bannerData}}" wx:key="">
+                    <swiper-item>
+                        <view class="card {{index == vipIndex ? 'cur' : ''}}">
+                          <image mode="widthFix" src="{{item.picUrl}}"></image>
+                          <view class="title">好奇心使我点进来，求生欲让我退出去</view>
+                        </view>
+                    </swiper-item>
+                </block>
+            </swiper>
+
+            <view class="vip-btn">进入会员中心</view>
+          </view>
+
+          <!-- 个性歌单推荐 -->
+          <view class="com-pannel">
+            <view class="pannel-title">华语音乐歌单，帮你挑好了</view>
+            <view class="music-list-wrap">
+              <block wx:for="{{personalRecommendData}}" wx:key="">
+                <view class="music-list-item" wx:if="{{index < 3}}">
+                  <view class="poster">
+                    <view class="playcount">{{_handle.filterPlayCount(item.playcount)}}</view>
+                    <image src="{{item.coverImgUrl}}" mode="scaleToFill" lazy-load="true"></image>
+                  </view>
+                  <view class="name">{{item.name}}</view>
+                </view>
+              </block>
+            </view>
+
+            <block wx:for="{{personalRecommendData}}" wx:key="">
+              <view class="music-list-detail-item" wx:if="{{index > 2}}">
+                <view class="cover"><image src="{{item.coverImgUrl}}" mode="scaleToFill" lazy-load="true"></image></view>
+                <view class="detail">
+                  <view class="title"><view class="tag">歌单</view>{{item.name}}</view>
+                  <view class="play-info">
+                    <view class="playCount">播放：{{_handle.filterPlayCount(item.playCount)}}</view>
+                    <view class="commentCount">收藏：{{_handle.filterPlayCount(item.subscribedCount)}}</view>
+                  </view>
+                  <view class="author">
+                    <view class="avatar"><image src="{{item.creator.avatarUrl}}" mode="scaleToFill" lazy-load="true"></image></view>
+                    <view class="name">{{item.creator.nickname}}</view>
+                  </view>
+                </view>
+              </view>
+            </block>
+            
+          </view>
+
+      </view>
+
+    </view>
+
+
+
+
+    <view class="end"></view>
+
+</template>
+
+<script>
+import wepy from 'wepy';
+import gConfig from '../util/config.js';
+import mywxs from '../wxs/mywxs.wxs';
+let Fly = require('../util/fly.min.js');
+let fly = new Fly();
+fly.config.timeout = 5000;
+fly.config.baseURL = gConfig.host;
+fly.interceptors.response.use(
+  response => {
+    //只将请求结果的data字段返回
+    return response.data;
+  },
+  err => {
+    //发生网络错误后会走到这里
+    return Promise.resolve(err);
+  }
+);
+
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '网易云音乐'
+  };
+  components = {};
+
+  data = {
+    bannerData: [
+      {
+        picUrl:
+          'http://p1.music.126.net/GjuKNvh3q8vHDCVagLYI6A==/109951163609581725.jpg',
+        url: '/mv?id=10804352',
+        targetId: '10804352',
+        backgroundUrl:
+          'http://p1.music.126.net/bbwTuhwxVZBaIOVfnoo8Ow==/109951163609584619.jpg',
+        targetType: '1004',
+        monitorType: '',
+        monitorImpress: '',
+        monitorClick: ''
+      },
+      {
+        picUrl:
+          'http://p1.music.126.net/Qg-Fbgos1FOBhtZFwHrisQ==/109951163609586764.jpg',
+        url: 'https://music.163.com/store/newalbum/detail?id=73931729',
+        targetId: '0',
+        backgroundUrl:
+          'http://p1.music.126.net/atdtWvdUAnj8AFTN-h8nnw==/109951163609583883.jpg',
+        targetType: '3000',
+        monitorType: '',
+        monitorImpress: '',
+        monitorClick: ''
+      },
+      {
+        picUrl:
+          'http://p1.music.126.net/q6fCDncWogKEMoLLfq4lIg==/109951163609567199.jpg',
+        url: '/album?id=73922710',
+        targetId: '73922710',
+        backgroundUrl:
+          'http://p1.music.126.net/5bRTG-ZIuFIqk3MLJ8ZS-A==/109951163609569601.jpg',
+        targetType: '10',
+        monitorType: '',
+        monitorImpress: '',
+        monitorClick: ''
+      },
+      {
+        picUrl:
+          'http://p1.music.126.net/TLSSh3YURnnGPgK8i1KvQA==/109951163608472587.jpg',
+        url: '/album?id=73837157',
+        targetId: '73837157',
+        backgroundUrl:
+          'http://p1.music.126.net/ICVMxcoOx32_UoXKBIkeMg==/109951163608473076.jpg',
+        targetType: '10',
+        monitorType: '',
+        monitorImpress: '',
+        monitorClick: ''
+      },
+      {
+        picUrl:
+          'http://p1.music.126.net/gM9qjiyrtPlST1wNzyBBGA==/109951163609577049.jpg',
+        url: '/song?id=1318430037',
+        targetId: '1318430037',
+        backgroundUrl:
+          'http://p1.music.126.net/7P8jLOAc4MYA-K9eJ4sxTg==/109951163609577052.jpg',
+        targetType: '1',
+        monitorType: '',
+        monitorImpress: '',
+        monitorClick: ''
+      },
+      {
+        picUrl:
+          'http://p1.music.126.net/1j7JC9ijByhF_2jr8Q6lKg==/109951163598837461.jpg',
+        url: '/album?id=73836818',
+        targetId: '73836818',
+        backgroundUrl:
+          'http://p1.music.126.net/ylLPPY6XwSvoOwNLevvT2w==/109951163598840406.jpg',
+        targetType: '10',
+        monitorType: '',
+        monitorImpress: '',
+        monitorClick: ''
+      },
+      {
+        picUrl:
+          'http://p1.music.126.net/us9BWDPjUxycAtLchtq3Yg==/109951163607628486.jpg',
+        url: '/album?id=73914415',
+        targetId: '73914415',
+        backgroundUrl:
+          'http://p1.music.126.net/gsMN2Y6EcTAYOgWUTje6yg==/109951163607636206.jpg',
+        targetType: '10',
+        monitorType: '',
+        monitorImpress: '',
+        monitorClick: ''
+      },
+      {
+        picUrl:
+          'http://p1.music.126.net/wCYYcHPmiRDpULJ6kGUSVQ==/109951163609556986.jpg',
+        url: 'https://music.163.com/m/at/5bc69f8a3825fae9cc299859',
+        targetId: '0',
+        backgroundUrl:
+          'http://p1.music.126.net/U6ogSXxj6bxZJYDv_LAwhQ==/109951163609568084.jpg',
+        targetType: '3000',
+        monitorType: '',
+        monitorImpress: '',
+        monitorClick: ''
+      }
+    ],
+    recommendData: [],
+    personalRecommendData: [],
+    topPlayListData: [],
+    djprogramData: [],
+    vipRecommendData: [],
+    vipIndex: 0
+  };
+
+  wxs = {
+    _handle: mywxs
+  };
+
+  computed = {
+    now() {
+      return +new Date();
+    }
+  };
+
+  methods = {
+    vipChange(e) {
+      this.vipIndex = e.detail.current;
+      this.$apply();
+    }
+  };
+
+  events = {};
+
+  //获取banner
+  getBanner() {
+    let self = this;
+    fly
+      .get(`/banner`)
+      .then(function(response) {
+        console.log(response);
+        self.bannerData = response.banners;
+        self.$apply();
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  // 获取推荐歌单
+  getRecommend() {
+    let self = this;
+    fly
+      .get(`http://www.mockhttp.cn/mock/neteasecloudmusic/recommend/resource`)
+      .then(function(response) {
+        console.log(response);
+        self.recommendData = response.recommend;
+        self.$apply();
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  //个性歌单推荐
+  getPersonalRecommend() {
+    let self = this;
+    fly
+      .get(`/top/playlist`, { cat: '华语', limit: 6 })
+      .then(function(response) {
+        console.log(response);
+        self.personalRecommendData = response.playlists;
+        self.$apply();
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  //获取最新音乐
+  getTopPlayList() {
+    let self = this;
+    fly
+      .get(`/top/playlist/highquality`, { limit: 6 })
+      .then(function(response) {
+        console.log(response);
+        self.topPlayListData = response.playlists;
+        self.$apply();
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  //主播电台
+  getDjProgram() {
+    let self = this;
+    fly
+      .get(`/personalized/djprogram`)
+      .then(function(response) {
+        console.log(response);
+        self.djprogramData = response.result;
+        self.$apply();
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  onLoad() {
+    let self = this;
+
+    self.getBanner();
+    self.getRecommend();
+    self.getPersonalRecommend();
+    self.getTopPlayList();
+    self.getDjProgram();
+  }
+}
+</script>

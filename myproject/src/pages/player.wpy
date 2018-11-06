@@ -1,0 +1,201 @@
+<style lang="less" src="../style/player.less"></style>
+
+<template>
+
+    <view class="player-wrap">
+        <view class="player-bg">
+            <image src="{{songDetail.al.picUrl}}" mode="aspectFill"
+              lazy-load="false">
+            </image>
+        </view>
+
+        <view class="player-box">
+
+            <view class="player-top">
+                <view class="song-poster">
+                    <view class="player-disc-wrap">
+                        <view class="player-disc pause">
+                            <view class="player-disc-mask" style="background-image: url('../images/disc-ip6.png');"></view>
+                            <view class="player-poster">
+                                <image src="{{songDetail.al.picUrl}}" mode="aspectFill"
+                                lazy-load="false">
+                                </image>
+                            </view>
+                        </view>
+                    </view>
+
+                    <view class="player-needle">
+                        <view class="needle" style="background-image: url('../images/needle-ip6.png');"></view>
+                    </view>
+                </view>
+                <view class="song-lyric"></view>
+            </view>
+
+            <view class="player-bottom">
+                <view class="player-fun-bar">
+                    <view class="btn iconfont icon-shoucang"></view>
+                    <view class="btn iconfont icon-danquxunhuan"></view>
+                    <view class="btn iconfont icon-004caozuo_liebiao"></view>
+                    <view class="btn iconfont icon-gengduo"></view>
+                </view>
+
+                <view class="player-controler">
+                    <view class="player-progress-wrap">
+                        <view class="time time-cur">00:00</view>
+                        <view class="progress-bar">
+                            <view class="bar"><view class="dot"></view></view>
+                        </view>
+                        <view class="time time-duration">{{_handle.countSongsDuration(songDetail.dt)}}</view>
+                    </view>
+
+                    <view class="player-controler-bar">
+                        <view class="btn caozuo iconfont icon-047caozuo_shangyishou"></view>
+                        <view class="btn bofang iconfont {{isPause?'icon-zanting':'icon-bofang'}}"></view>
+                        <view class="btn caozuo iconfont icon-048caozuo_xiayishou"></view>
+                    </view>
+                </view>
+            </view>
+
+        </view>
+
+    </view>
+    
+    <view class="end"></view>
+
+</template>
+
+<script>
+import wepy from 'wepy';
+import gConfig from '../util/config.js';
+import util from '../util/util.js';
+import mywxs from '../wxs/mywxs.wxs';
+let Fly = require('../util/fly.min.js');
+let fly = new Fly();
+fly.config.timeout = 5000;
+fly.config.baseURL = gConfig.host;
+fly.interceptors.response.use(
+  response => {
+    //只将请求结果的data字段返回
+    return response.data;
+  },
+  err => {
+    //发生网络错误后会走到这里
+    return Promise.resolve(err);
+  }
+);
+
+export default class Login extends wepy.page {
+  config = {
+    navigationBarTitleText: ''
+  };
+  components = {};
+
+  data = {
+    songId: null,
+    songDetail: null,
+    songUrl: null,
+    songLyric: null,
+    playerSetting: {}
+  };
+  wxs = {
+    _handle: mywxs
+  };
+
+  computed = {};
+
+  methods = {};
+
+  events = {};
+
+  getSongsDetail(id) {
+    let self = this;
+    fly
+      .get(`/song/detail`, { ids: id })
+      .then(res => {
+        console.log(res);
+        self.songDetail = res.songs[0];
+        self.$apply();
+
+        wx.setNavigationBarTitle({
+          title: res.songs[0].name + ' - ' + res.songs[0].ar[0].name
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  getSongsUrl(id) {
+    // console.log(id);
+    let self = this;
+    fly
+      .get(`/song/url`, { id })
+      .then(res => {
+        console.log(res);
+        self.songUrl = res.data[0].url;
+        self.$apply();
+
+        self.initPlayer();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  getSongsLyric(id) {
+    // console.log(id);
+    let self = this;
+    fly
+      .get(`/lyric`, { id })
+      .then(res => {
+        console.log(res);
+        self.songLyric = res.lrc.lyric;
+        self.$apply();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  initPlayer() {
+    let self = this;
+    const innerAudioContext = wx.createInnerAudioContext();
+    innerAudioContext.autoplay = true;
+    innerAudioContext.loop = false;
+    innerAudioContext.src = self.songUrl;
+
+    innerAudioContext.onCanplay(() => {});
+
+    innerAudioContext.onPlay(() => {
+      console.log('开始播放');
+    });
+
+    innerAudioContext.onPause(() => {});
+
+    innerAudioContext.onStop(() => {});
+
+    innerAudioContext.onEnded(() => {});
+
+    innerAudioContext.onTimeUpdate(() => {});
+
+    innerAudioContext.onWaiting(() => {});
+
+    innerAudioContext.onError(res => {
+      console.log(res.errMsg);
+      console.log(res.errCode);
+    });
+  }
+
+  onShow() {}
+
+  onLoad(e) {
+    let self = this;
+    self.songId = e.id;
+    self.$apply();
+
+    self.getSongsDetail(e.id);
+    self.getSongsUrl(e.id);
+    self.getSongsLyric(e.id);
+  }
+}
+</script>

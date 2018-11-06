@@ -1,0 +1,93 @@
+<style lang="less" src="../style/daily_recommendation.less"></style>
+
+<template>
+    
+    <view class="ad-banner">
+      <image src="https://p1.music.126.net/29c1zDsDtR5zzG1SyRsNkg==/109951163632459645.jpg" mode="scaleToFill"></image>
+    </view>
+
+    <view class="music-list-wrap">
+      <view class="list-top">
+        <view class="play-all">播放全部</view>
+        <view class="select-multi">多选</view>
+      </view>
+
+      <block wx:for="{{recommendSongs}}" wx:key="">
+        <view class="list-item">
+          <view class="pic"><image src="{{item.album.picUrl}}" mode="scaleToFill" lazy-load="false"></image></view>
+
+          <view class="info">
+            <view class="name">{{item.name}}</view>
+            <view class="author">{{item.artists[0].name}} - {{item.album.name}}</view>
+          </view>
+
+          <view class="fun">···</view>
+        </view>
+      </block>
+
+    </view>
+
+    <view class="end"></view>
+
+</template>
+
+<script>
+import wepy from 'wepy';
+import gConfig from '../util/config.js';
+import util from '../util/util.js';
+let Fly = require('../util/fly.min.js');
+let fly = new Fly();
+fly.config.timeout = 5000;
+fly.config.baseURL = gConfig.host;
+fly.interceptors.response.use(
+  response => {
+    //只将请求结果的data字段返回
+    return response.data;
+  },
+  err => {
+    //发生网络错误后会走到这里
+    return Promise.resolve(err);
+  }
+);
+
+export default class Login extends wepy.page {
+  config = {
+    navigationBarTitleText: '每日推荐'
+  };
+  components = {};
+
+  data = {
+    recommendSongs: []
+  };
+
+  computed = {
+    now() {
+      return +new Date();
+    }
+  };
+
+  methods = {};
+
+  events = {};
+
+  getRecommend() {
+    let self = this;
+    fly
+      .get(`/recommend/songs`)
+      .then(function(response) {
+        console.log(response);
+        self.recommendSongs = response.recommend;
+        self.$apply();
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  onLoad() {
+    let self = this;
+
+    self.getRecommend();
+  }
+}
+</script>

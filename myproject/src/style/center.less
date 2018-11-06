@@ -1,0 +1,131 @@
+@import "basics.less";
+
+page {
+    background: #eeeff0;
+}
+
+.user-box {
+    width: 100%;
+    height: 186rpx;
+    .box();
+    .box-orient(horizontal);
+    .box-align(center);
+    .box-pack(center);
+    background: #fff;
+
+    .avatar {
+        width: 120rpx;
+        height: 120rpx;
+        overflow: hidden;
+        border-radius: 50%;
+        margin: 0 20rpx 0 30rpx;
+
+        image {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .info {
+        .box();
+        .box-flex(1);
+        .box-orient(vertical);
+        .box-align(start);
+        .box-pack(start);
+
+        .name {
+            width: 100%;
+            height: 72rpx;
+            line-height: 72rpx;
+        }
+
+        .level {
+            width: 70rpx;
+            height: 32rpx;
+            line-height: 32rpx;
+            border-radius: 16rpx;
+            border: 2rpx solid #bfbfbf;
+            color: #999999;
+            text-align: center;
+            font-size: 24rpx;
+        }
+    }
+
+
+    .btn-sign {
+        width: 126rpx;
+        height: 52rpx;
+        line-height: 52rpx;
+        border: 2rpx solid #333;
+        margin: 0 20rpx;
+        text-align: center;
+        font-size: 24rpx;
+        border-radius: 26rpx;
+    }
+}
+
+.cel-mb {
+    margin-bottom: 20rpx;
+}
+
+.data-box {
+    width: 100%;
+    height: 102rpx;
+    border-top: 1rpx solid #e2e3e4;
+    background: #fff;
+    .box();
+    .box-orient(horizontal);
+    .box-align(center);
+    .box-pack(center);
+
+    .item {
+        .box();
+        width: 25%;
+        .box-orient(vertical);
+        .box-align(center);
+        .box-pack(center);
+        box-sizing: border-box;
+        position: relative;
+
+        &:after {
+            content: '';
+            height: 58rpx;
+            width: 1px;
+            background: #e2e3e4;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            margin-top: -29rpx;
+        }
+
+        text {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .t1 {
+            font-size: 28rpx;
+            color: #979798;
+        }
+        .t2 {
+            font-size: 28rpx;
+            color: #646566;
+        }
+        .n1 {
+            font-size: 26rpx;
+            color: #333;
+            font-weight: bold;
+        }
+        .iconfont {
+            color: #9a999e;
+            font-size: 34rpx;
+            font-weight: bold;
+        }
+
+        &.btn {
+            &:after {
+                display: none;
+            }
+        }
+    }
+}

@@ -1,0 +1,108 @@
+@import "basics.less";
+page {
+    background: #fff;
+}
+
+.ad-banner {
+    width: 100%;
+    height: 334rpx;
+    background: #dfdfdf;
+
+    image {
+        width: 100%;
+        height: 334rpx;
+    }
+}
+
+
+.music-list-wrap {
+    width: 100%;
+    padding-left: 20rpx;
+    box-sizing: border-box;
+
+    .list-top {
+        width: 100%;
+        height: 100rpx;
+        line-height: 100rpx;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0px;
+        background: #fff;
+        border-bottom: 1rpx solid #e4e4e4;
+        .box();
+        .box-orient(horizontal);
+        .box-align(center);
+        .box-pack(justify);
+
+        .play-all {
+            font-size: 30rpx;
+            color: #333;
+        }
+
+        .select-multi {
+            font-size: 30rpx;
+            color: #333;
+            padding-right: 20rpx;
+        }
+    }
+
+    .list-item {
+        width: 100%;
+        height: 110rpx;
+        border-bottom: 1rpx solid #e4e4e4;
+        .box();
+        .box-orient(horizontal);
+        .box-align(center);
+        .box-pack(justify);
+
+        .pic {
+            width: 80rpx;
+            height: 80rpx;
+            border-radius: 5rpx;
+            overflow: hidden;
+            margin-right: 20rpx;
+
+            image {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .info {
+            .box();
+            .box-flex(1);
+            .box-orient(vertical);
+            .box-align(start);
+            .box-pack(center);
+            height: 110rpx;
+            text-align: left;
+
+            .name, .author {
+                width: 80%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .name {
+                font-size: 32rpx;
+                color: #333;
+                line-height: 44rpx;
+                height: 44rpx;
+            }
+            .author {
+                font-size: 24rpx;
+                color: #7f8080;
+                line-height: 28rpx;
+            }
+        }
+
+        .fun {
+            width: 92rpx;
+            height: 110rpx;
+            line-height: 110rpx;
+            text-align: center;
+            color: #7f8080;
+            font-size: 30rpx;
+        }
+    }
+}

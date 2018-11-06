@@ -1,0 +1,120 @@
+<style lang="less" src="../style/login.less"></style>
+
+<template>
+
+    <view class="login_wrap">
+        <form @submit="login">
+            <view class="l-input">
+                <input name="phone" type="number" placeholder="手机号" maxlength="11" adjust-position="false" />
+            </view>
+            <view class="l-input">
+                <input name="psw" type="text" password="true" placeholder="密码" adjust-position="false" />
+            </view>
+
+            <button class="login_btn" formType="submit">登录</button>
+        </form>
+    </view>
+    
+    <view class="end"></view>
+
+</template>
+
+<script>
+import wepy from 'wepy';
+import gConfig from '../util/config.js';
+import util from '../util/util.js';
+let Fly = require('../util/fly.min.js');
+let fly = new Fly();
+fly.config.timeout = 5000;
+fly.config.baseURL = gConfig.host;
+fly.interceptors.response.use(
+  response => {
+    //只将请求结果的data字段返回
+    return response.data;
+  },
+  err => {
+    //发生网络错误后会走到这里
+    return Promise.resolve(err);
+  }
+);
+
+export default class Login extends wepy.page {
+  config = {
+    navigationBarTitleText: '手机号登录'
+  };
+  components = {};
+
+  data = {};
+
+  computed = {
+    now() {
+      return +new Date();
+    }
+  };
+
+  methods = {
+    login(e) {
+      console.log(e);
+      const phone = e.detail.value.phone || 13570521445;
+      const password = e.detail.value.psw || 'cxd123456789';
+
+      if (!util.checkPhone(phone)) {
+        //手机号码格式错误
+        wx.showToast({
+          title: '手机号码格式错误',
+          icon: 'none',
+          mask: true
+        });
+      } else if (password == '') {
+        //请输入密码
+        wx.showToast({
+          title: '请输入密码',
+          icon: 'none',
+          mask: true
+        });
+      } else {
+        wx.showLoading({
+          title: '登录中',
+          mask: true
+        });
+        fly
+          .get(`/login/cellphone`, {
+            phone,
+            password
+          })
+          .then(res => {
+            console.log(res);
+            wx.hideLoading();
+            wx.navigateTo({
+              url: 'index'
+            });
+          })
+          .catch(err => {
+            console.log(err);
+            wx.hideLoading();
+          });
+      }
+    }
+  };
+
+  events = {};
+
+  onLoad() {
+    let self = this;
+    // fly
+    //   .get(`${gConfig.host}/banner`)
+    //   .then(function(response) {
+    //     console.log(response);
+    //     if (response.status == 200 && response.data.code == 200) {
+    //       let bannerData = response.data.banners;
+    //       console.log(bannerData);
+    //       self.bannerData = bannerData;
+    //       self.$apply();
+    //     }
+    //   })
+    //   .catch(function(error) {
+    //     console.log(error);
+    //   });
+  }
+}
+</script>

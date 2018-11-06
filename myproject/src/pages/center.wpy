@@ -1,0 +1,154 @@
+<style lang="less" src="../style/center.less"></style>
+
+<template>
+
+    <view class="user-box">
+      <view class="avatar"><image src="http://p1.music.126.net/dVhoahYrQfzCQjAEnj82qg==/109951163370694634.jpg" mode="scaleToFill"></image></view>
+      <view class="info">
+        <view class="name">切图仔阿Don</view>
+        <view class="level">Lv.9</view>
+      </view>
+      <view class="btn-sign">签到</view>
+    </view>
+
+    <view class="data-box cel-mb">
+      <view class="item data">
+        <text class="t1">动态</text>
+        <text class="n1">0</text>
+      </view>
+      <view class="item data">
+        <text class="t1">关注</text>
+        <text class="n1">2</text>
+      </view>
+      <view class="item data">
+        <text class="t1">粉丝</text>
+        <text class="n1">1</text>
+      </view>
+      <view class="item btn">
+        <text class="iconfont icon-iconset0137"></text>
+        <text class="t2">我的资料</text>
+      </view>
+    </view>
+
+    <view class="weui-cells weui-cells_after-title cel-mb">
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">我的消息</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+    </view>
+
+    <view class="weui-cells weui-cells_after-title cel-mb">
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">会员中心</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">商城</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">游戏推荐Beta</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">在线听歌免流量</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+    </view>
+
+    <view class="weui-cells weui-cells_after-title cel-mb">
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">设置</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">扫一扫</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">个性皮肤</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access">自选颜色</view>
+        </navigator>
+        <view class="weui-cell weui-cell_switch">
+            <view class="weui-cell__bd">夜间模式</view>
+            <view class="weui-cell__ft">
+                <switch checked color="#363a3d"></switch>
+            </view>
+        </view>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">定时关闭</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">音乐闹钟</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">驾驶模式</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">亲自频道</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+    </view>
+
+    <view class="weui-cells weui-cells_after-title cel-mb">
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">分享网易云音乐</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">关于</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+    </view>
+    
+    <view class="end"></view>
+
+</template>
+
+<script>
+import wepy from 'wepy';
+import gConfig from '../util/config.js';
+import util from '../util/util.js';
+let Fly = require('../util/fly.min.js');
+let fly = new Fly();
+fly.config.timeout = 5000;
+fly.config.baseURL = gConfig.host;
+fly.interceptors.response.use(
+  response => {
+    //只将请求结果的data字段返回
+    return response.data;
+  },
+  err => {
+    //发生网络错误后会走到这里
+    return Promise.resolve(err);
+  }
+);
+
+export default class Login extends wepy.page {
+  config = {
+    navigationBarTitleText: '账号'
+  };
+  components = {};
+
+  data = {
+    userData: {}
+  };
+
+  computed = {
+    now() {
+      return +new Date();
+    }
+  };
+
+  methods = {};
+
+  events = {};
+
+  onLoad() {
+    let self = this;
+  }
+}
+</script>
